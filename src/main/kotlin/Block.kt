@@ -1,7 +1,7 @@
-class Block(private val name: Int, private val previousHash: String, private val data: String) {
+class Block(private val block: String, private val previousHash: String, private val data: String) {
 
     fun printBlock() {
-        println("name=$name" +
+        println("block=$block" +
         System.lineSeparator() +
         "previous_hash=$previousHash" +
         System.lineSeparator() +
