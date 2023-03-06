@@ -58,8 +58,9 @@ class Blockchain(private val path: String) {
 		if(listOfBlocks[0].block != "00" || listOfBlocks[0].previousHash != "null") {
 			return false
 		}
-		for (i in 1..listOfBlocks.size) {
-			if (!isBlockNumberCorrect(listOfBlocks[i].block, i)) {
+		for (i in 1..listOfBlocks.lastIndex) {
+			if (!isBlockNumberCorrect(listOfBlocks[i].block, i) || listOfBlocks[i].previousHash != listOfBlocks[i-1].hash) {
+				println("Hier: " + !isBlockNumberCorrect(listOfBlocks[i].block, i))
 				return false
 			}
 		}
