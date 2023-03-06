@@ -1,11 +1,18 @@
-class Block(private val block: String, private val previousHash: String, private val data: String) {
+class Block(val block: String, val previousHash: String, private val data: String, val hash: String) {
 
-    fun printBlock() {
-        println("block=$block" +
-        System.lineSeparator() +
-        "previous_hash=$previousHash" +
-        System.lineSeparator() +
-        "data=$data")
-    }
+	fun printBlock() {
+		println(toString())
+	}
 
+	fun validateBlock(): Boolean {
+		return true
+	}
+
+	override fun toString(): String {
+		return "block=$block" +
+				System.lineSeparator() +
+				"previous_hash=$previousHash" +
+				System.lineSeparator() +
+				"data=$data"
+	}
 }
