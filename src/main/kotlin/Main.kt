@@ -1,3 +1,8 @@
+/**@author Max Henning Junghans */
+/**
+ * This is the entry point of the application.
+ * It loads a blockchain from a given path.
+ */
 fun main(args: Array<String>) {
 	if (args.isNotEmpty()) {
 		val blockchain = Blockchain(args[0])
@@ -7,6 +12,10 @@ fun main(args: Array<String>) {
 	}
 }
 
+/**
+ * This method reads the input of the user and acts on that input.
+ * @param blockchain The Blockchain on which the operations should be executed.
+ */
 fun run(blockchain: Blockchain) {
 	var finished = false
 	println("Type on of the following options: !print, !add, !validate, !fin.")
@@ -16,7 +25,7 @@ fun run(blockchain: Blockchain) {
 			"!add" -> blockchain.addBlock(askUserForData())
 			"!add2" -> blockchain.addBlock(askUserForDataWithLinebreaks())
 			"!validate" -> {
-				if (blockchain.validateBlockchain()) {
+				if (blockchain.isValid()) {
 					println("This blockchain is valid.")
 				} else {
 					println("This blockchain is not valid.")
@@ -30,11 +39,21 @@ fun run(blockchain: Blockchain) {
 	}
 }
 
+/**
+ * This method prompts the User to input the data of a block.
+ * @return The input of the User.
+ */
 fun askUserForData(): String {
 	println("Write the data you would like to add.")
 	return readln()
 }
 
+/**
+ * This method prompts the User to input the data of a block.
+ * It is an alternative to askUserForData().
+ * Here the user can input multiple lines of data.
+ * @return The input of the User.
+ */
 fun askUserForDataWithLinebreaks(): String{
 	println("Write the data you would like to add. If you are done, write !end")
 	var data = ""
