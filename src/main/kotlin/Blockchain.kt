@@ -44,12 +44,10 @@ class Blockchain(private val path: String) {
 				"data=$data")
 		val block = Block(blockNumber, previousHash, data, hash)
 		val fileData: String = block.toString()
-		if (block.validateBlock()) {
-			listOfBlocks.add(block)
-			File(path + "\\" + blockNumber).printWriter().use { out ->
-				fileData.forEach {
-					out.print(it)
-				}
+		listOfBlocks.add(block)
+		File(path + "\\" + blockNumber).printWriter().use { out ->
+			fileData.forEach {
+				out.print(it)
 			}
 		}
 	}
