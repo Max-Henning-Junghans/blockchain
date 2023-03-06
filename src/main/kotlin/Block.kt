@@ -2,11 +2,12 @@
  * This class represents a block of a blockchain.
  * @param block This is the id of the block. It should be a two digit integer as a String.
  * @param previousHash This is the hash of the previous block in the blockchain.
+ * @param nonce This is the nonce for the block.
  * @param data This is the data of the block. It can be arbitrary.
  * @param hash This is the hash of the block. It only gets used for validation purposes.
  * @author Max Henning Junghans
  */
-class Block(val block: String, val previousHash: String, private val data: String, val hash: String) {
+class Block(val block: String, val previousHash: String, val nonce: String, private val data: String, val hash: String) {
 
 	/**
 	 * This method prints the block and adds the hash of the block at the end.
@@ -25,6 +26,8 @@ class Block(val block: String, val previousHash: String, private val data: Strin
 		return "block=$block" +
 				System.lineSeparator() +
 				"previous_hash=$previousHash" +
+				System.lineSeparator() +
+				"nonce=$nonce" +
 				System.lineSeparator() +
 				"data=$data"
 	}

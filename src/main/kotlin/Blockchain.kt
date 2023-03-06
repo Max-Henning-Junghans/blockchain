@@ -21,9 +21,10 @@ class Blockchain(private val path: String) {
 						val fileDataLines = fileData.lines()
 						val name: String = fileDataLines[0].substringAfter("block=")
 						val previousHash: String = fileDataLines[1].substringAfter("previous_hash=")
+						val nonce: String = fileDataLines[2].substringAfter("nonce=")
 						val data: String =
 							fileData.substringAfter("data=")
-						listOfBlocks.add(Block(name, previousHash, data, hash(file.readText())))
+						listOfBlocks.add(Block(name, previousHash, nonce, data, hash(file.readText())))
 					}
 				}
 			}
@@ -45,12 +46,15 @@ class Blockchain(private val path: String) {
 			blockNumber= convertIntToTwoDigitString(listOfBlocks.size)
 			previousHash = listOfBlocks[listOfBlocks.lastIndex].hash
 		}
+		val nonce = calculateNonce(blockNumber, previousHash, data)
 		val hash = hash("block=$blockNumber" +
 				System.lineSeparator() +
 				"previous_hash=$previousHash" +
 				System.lineSeparator() +
+				"nonce=$nonce" +
+				System.lineSeparator() +
 				"data=$data")
-		val block = Block(blockNumber, previousHash, data, hash)
+		val block = Block(blockNumber, previousHash, nonce, data, hash)
 		val fileData: String = block.toString()
 		listOfBlocks.add(block)
 		File(path + "\\" + blockNumber).printWriter().use { out ->
@@ -116,5 +120,42 @@ class Blockchain(private val path: String) {
 		val md = MessageDigest.getInstance("SHA-256")
 		val digest = md.digest(bytes)
 		return digest.fold("") { str, it -> str + "%02x".format(it) }
+	}
+
+	/**
+	 * This method brute forces the nonce for the block.
+	 * @param block The block id.
+	 * @param prevHash The hash of the previous block.
+	 * @param data The data for the block.
+	 * @return The nonce.
+	 */
+	private fun calculateNonce(block: String, prevHash: String, data: String): String {
+		var i = 0
+		while (true) {
+			if (isHashBigEnough(hash("block=$block" +
+						System.lineSeparator() +
+						"previous_hash=$prevHash" +
+						System.lineSeparator() +
+						"nonce=$i" +
+						System.lineSeparator() +
+						"data=$data"))) {
+				return i.toString()
+			}
+			i++
+		}
+	}
+
+	/**
+	 * This method checks, if the first 6 chars of a String are equal to 0.
+	 * @param hash The hash to be checked.
+	 * @return If the hash is big enough, return true, else false.
+	 */
+	private fun isHashBigEnough(hash: String): Boolean {
+		for (i in 0 .. 5) {
+			if (hash[i] != '0') {
+				return false
+			}
+		}
+		return true
 	}
 }
