@@ -2,6 +2,7 @@ class Block(val block: String, val previousHash: String, private val data: Strin
 
 	fun printBlock() {
 		println(toString())
+		println("Hash of the block: $hash")
 	}
 
 	fun validateBlock(): Boolean {
